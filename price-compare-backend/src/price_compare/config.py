@@ -76,17 +76,18 @@ BLINKIT_CONFIG = PlatformConfig(
 # unlike Blinkit, landing directly on the URL with ?query=... shows a
 # generic default listing rather than real search results, so the query
 # has to be typed into the on-page search box (see search_input_selector
-# and scraper.py). This selector is a best-effort guess (type="search" or
-# a placeholder mentioning "search" are common, standard patterns) rather
-# than something verified against Zepto's real markup -- if it doesn't
-# find the right input, the fix is to inspect the box in DevTools and
-# swap in its real selector here.
+# and scraper.py). role="combobox" is confirmed from the real search box
+# markup (not a guess): the input is type="text" with role="combobox",
+# aria-autocomplete="both" -- notably NOT type="search", which is why an
+# earlier, unverified guess at this selector never matched anything.
 ZEPTO_CONFIG = PlatformConfig(
     key="zepto",
     label="Zepto",
     search_url_template="https://www.zepto.com/search?query={query}",
     origin="https://www.zepto.com",
-    search_input_selector='input[type="search"], input[placeholder*="search" i], input[aria-label*="search" i]',
+    search_input_selector='input[role="combobox"]',
+    # <input class="flex-1 outline-none" aria-autocomplete="both" 
+    # aria-expanded="false" autocomplete="off" id="_r_2_--input" placeholder="Search for over 70,000 products" role="combobox" spellcheck="false" type="text" value="">
 )
 
 SUPPORTED_PLATFORMS: tuple[PlatformConfig, ...] = (BLINKIT_CONFIG, ZEPTO_CONFIG)
@@ -97,5 +98,5 @@ SUPPORTED_PLATFORMS: tuple[PlatformConfig, ...] = (BLINKIT_CONFIG, ZEPTO_CONFIG)
 #   "groq/llama-3.3-70b-versatile"        -> needs GROQ_API_KEY, free tier, very fast
 #   "ollama/qwen2.5"                      -> free, runs on your machine, needs Ollama installed
 EXTRACTION_LLM_PROVIDER = os.environ.get("PRICE_COMPARE_LLM_PROVIDER", "gemini/gemini-3.5-flash-lite")
-GEMINI_API_KEY=""
 EXTRACTION_LLM_API_KEY=GEMINI_API_KEY
+#EXTRACTION_LLM_API_KEY = os.environ.get("PRICE_COMPARE_LLM_API_KEY") or os.environ.get("OPENAI_API_KEY", "no-token")

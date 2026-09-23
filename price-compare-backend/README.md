@@ -214,17 +214,3 @@ configured; every other module just does `logging.getLogger(__name__)`.
 - A search blocks for the full crawl duration (up to ~1 minute) rather than
   using a job-queue/polling pattern. Simpler, and fine for a single-user
   tool — the frontend's loading state assumes this.
-
-
-
-
-
-
-
-# products to search
-Britannica little hearts
-cadbury dairy milk silk
-
-
-zepto cheap >
-brook bond red label tea
